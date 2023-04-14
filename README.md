@@ -1,2 +1,2 @@
 # DecoderRing
-a decoder me and bkt are working on.
+Read HOW TO USE.pdf for instuctions.
