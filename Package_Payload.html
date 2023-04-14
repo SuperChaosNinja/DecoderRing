@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="jquery.min.js"></script>
+    <script src="jsencrypt.min.js"></script>
+</head>
+
+<body>
+    <center>
+        <br />
+        <br />
+        <h2>Paste Recipient's Public key here:</h2>
+        <textarea id="pubkeytext" cols=100 rows=10>-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDHikastc8+I81zCg/qWW8dMr8m
+qvXQ3qbPAmu0RjxoZVI47tvskYlFAXOf0sPrhO2nUuooJngnHV0639iTTEYG1vck
+NaW2R6U5QTdQ5Rq5u+uV3pMk7w7Vs4n3urQ6jnqt2rTXbC1DNa/PFeAZatbf7ffB
+By0IGO0zc128IshYcwIDAQAB
+-----END PUBLIC KEY-----</textarea>
+        <br />
+        <br />
+        <input type="button" id="generateButton" value="Generate Password and Transfer Code" />
+        <br />
+        <br />
+        <h2>Strong password</h2>
+        <textarea readonly id="plaintext" cols=100 rows=2></textarea><br />
+        Use this strong password is used to lock the 7zip archive. <b>- Then trash it! -</b> Do not share or re-use this password in any way.
+        <br />
+        <br />
+        <h2>Transfer Code</h2>
+        <br />
+        <textarea readonly id="encrypted" cols=100 rows=5></textarea>
+        <br />
+        This transfer code is delivered with the 7zip archive.
+        <br />
+        The recipient unscrambles it to reveal the above strong password.
+        <br />
+        Even if the password protected archive and transfer code are open to the public,
+        <br />
+        only the recipient can unscramble the strong password with their private key
+        <br />
+        because the strong password was scrambled using the recipient's public key
+    </center>
+</body>
+<script>
+    $("#generateButton").click(function () {
+        var randomPass = randomPassword(40);
+        $("#plaintext").html(randomPass);
+        var encrypt = new JSEncrypt();
+        var key = $("#pubkeytext").val();
+        encrypt.setPublicKey(key);
+        var encrypted = encrypt.encrypt(randomPass);
+        $("#encrypted").html(encrypted);
+
+    });
+
+    function randomPassword(length) {
+        var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890";
+        var pass = "";
+        for (var x = 0; x < length; x++) {
+            var i = Math.floor(Math.random() * chars.length);
+            pass += chars.charAt(i);
+        }
+        return pass;
+    };
+
+</script>
+
+</html>

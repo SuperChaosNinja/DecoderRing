@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="jquery.min.js"></script>
+    <script src="jsencrypt.min.js"></script>
+</head>
+
+<body>
+    <center>
+        <h1>Decoder Ring</h1>
+        <textarea id="privateKey" cols=100 rows=5>Private Key Goes Here</textarea><br />
+        <textarea id="cipherText" cols=100 rows=5>Scrambled Password goes here</textarea><br />
+        <input type="button" id="decodeButton" value="Descramble" />
+        <hr />
+        <textarea readonly id="decrypted" cols=100 rows=3></textarea>
+        <hr />
+        Use this password to unlock the payload.
+    </center>
+</body>
+<script>
+    $("#decodeButton").click(function () {
+        var decrypt = new JSEncrypt();
+        decrypt.setPrivateKey($("#privateKey").val());
+        var decryptMe = $("#cipherText").val();
+        var uncrypted = decrypt.decrypt(decryptMe);
+        $("#decrypted").html(uncrypted);
+    });
+</script>
+
+</html>
